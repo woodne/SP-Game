@@ -1,53 +1,37 @@
 tiles = {}
 
+local loader = require "libs/Advanced-Tiled-Loader/Loader"
+loader.path = "maps/"
+
 function tiles.load()
-	TILESIZE = 32
-	width,height = love.window.getDimensions()
+	map = loader.load("level.tmx")
+	allSolidTiles = findSolidTiles(map)
 
-	Tileset = love.graphics.newImage('res/grass.png')
-
-	local tileWidth, tileHeight = 32,32
-	local tilesetW,tilesetH = Tileset:getWidth(), Tileset:getHeight()
-
-	Quads = {
-		love.graphics.newQuad(0,0,tileWidth,tileHeight,tilesetW,tilesetH), -- 1
-		love.graphics.newQuad(32,0,tileWidth,tileHeight,tilesetW,tilesetH), -- 2
-		love.graphics.newQuad(0,32,tileWidth,tileHeight,tilesetW,tilesetH), -- 3
-		love.graphics.newQuad(32,32,tileWidth,tileHeight,tilesetW,tilesetH) -- 4
-	}
-
-	TileMap = {
-		{4,4,4,4,4,4,4,4,4,4,4,4,4,4,4},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,1,1,1,1,1,1,1,1,4,1,1,1,1,1},
-		{4,4,4,4,4,4,4,4,4,4,4,4,4,4,4}
-	}
-	
+  return allSolidTiles
 end
 function tiles.draw()
-	for x=1,#TileMap do
-		local row = TileMap[x]
-		for y=1,#row do
-			local number = row[y]
-			i = (x-1) * TILESIZE --tilesize
-			j = (y-1) * TILESIZE --tilesize
-			love.graphics.draw(Tileset, Quads[number],i,j)
-		end
-	end
+	map:draw()
 end
+
+function findSolidTiles(map)
+
+  local collidable_tiles = {}
+
+  local layer = map.layers["ground"]
+
+  for tileX, tileY, tile in layer:iterate() do
+
+      if tile and tile.properties.solid then
+        local ctile = collider:addRectangle((tileX) * 32, (tileY) * 32, 32, 32)
+        ctile.type = "tile"
+        collider:addToGroup("tiles", ctile)
+        collider:setPassive(ctile)
+        table.insert(collidable_tiles, ctile)
+      end
+
+  end
+
+  return collidable_tiles
+end
+
+

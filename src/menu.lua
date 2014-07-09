@@ -1,10 +1,27 @@
+gamestate = require ("src/hump.gamestate")
 
-function menu.update()
+local menu = {} -- previously: Gamestate.new()
+local game = {}
 
+function menu:draw()
+    love.graphics.print("Press Enter to continue", 10, 10)
 end
-function menu.draw()
 
+function menu:keyreleased(key, code)
+    if key == 'enter' then
+        Gamestate.switch(game)
+    end
 end
-function menu.handleEvents()
 
+function game:enter()
+    Entities.clear()
+    -- setup entities here
+end
+
+function game:update(dt)
+    Entities.update(dt)
+end
+
+function game:draw()
+    Entities.draw()
 end
