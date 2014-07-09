@@ -7,7 +7,7 @@ function player.load(dt)
 	player.width = 32
 	player.height = 32
 	hero = collider:addRectangle(player.x,player.y,player.height,player.width)
-	hero.img = love.graphics.newImage("res/hero1.png")
+	heroimage = love.graphics.newImage("res/hero1.png")
 	hero.velocity = {x = 0, y = 0}
 	hero.speed = 400
 	local jumped
@@ -51,6 +51,9 @@ end
 function player.draw()
 	love.graphics.setColor(255,0,0)
 	hero:draw("fill")
+	local x, y = hero:center()
+	love.graphics.draw(heroimage, x, y-heroimage:getWidth(), 
+		0, 1, 1, heroimage:getWidth()/2, heroimage:getWidth()/2) --replace soon
 	love.graphics.reset()
 end
 
