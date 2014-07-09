@@ -4,10 +4,10 @@ local loader = require "libs/Advanced-Tiled-Loader/Loader"
 loader.path = "maps/"
 
 function tiles.load()
-	map = loader.load("level.tmx")
+	map = loader.load("testlevel.tmx")
 	allSolidTiles = findSolidTiles(map)
 
-  return allSolidTiles
+  --return allSolidTiles
 end
 function tiles.draw()
 	map:draw()

@@ -1,7 +1,7 @@
  player = {}
 
 function player.load(dt)
-	player.x = 300
+	player.x = 50
 	player.y = 250
 	player.friction = 7
 	player.width = 32
