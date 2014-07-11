@@ -1,5 +1,7 @@
  player = {}
 
+require "libs.anal"
+
 function player.load(dt)
 	player.x = 0
 	player.y = 0
@@ -8,13 +10,16 @@ function player.load(dt)
 	player.height = 32
     player.coins = 0
 	hero = collider:addRectangle(player.x,player.y,player.height,player.width)
-	heroimage = love.graphics.newImage("res/hero1.png")
+	heroimage = love.graphics.newImage("res/hero.png")
+    anim = newAnimation(heroimage,104,110,.5,0)
+    anim:setMode("bounce")
 	hero.velocity = {x = 0, y = 0}
 	hero.speed = 400
 	local jumped
 end
 function player.update(dt)
 	--hero:move(0,dt*gravity)
+    anim:update(dt)
 	if hero.velocity.y > 0 then
 		hero.velocity.y = hero.velocity.y -5
 	elseif hero.velocity.y < 0 then
@@ -53,11 +58,13 @@ function player.move(dt)
 	end
 end
 function player.draw()
-	love.graphics.setColor(255,0,0)
-	hero:draw("fill")
-	--local x, y = hero:center()
-	--[[love.graphics.draw(heroimage, x, y-heroimage:getWidth(), 
-		0, 1, 1, heroimage:getWidth()/2, heroimage:getWidth()/2) ]]
+	--love.graphics.setColor(255,0,0)
+	--hero:draw("fill")
+
+	local x, y = hero:center()
+    anim:draw(x,y)
+	--[[love.graphics.draw(heroimage, x, y, 
+		0, .5, .5, heroimage:getWidth()/2, heroimage:getWidth()/2)]]
 	love.graphics.reset()
 end
 
