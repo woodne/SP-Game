@@ -6,6 +6,7 @@ function player.load(dt)
 	player.friction = 7
 	player.width = 32
 	player.height = 32
+    player.coins = 0
 	hero = collider:addRectangle(player.x,player.y,player.height,player.width)
 	heroimage = love.graphics.newImage("res/hero1.png")
 	hero.velocity = {x = 0, y = 0}
@@ -52,8 +53,8 @@ function player.draw()
 	love.graphics.setColor(255,0,0)
 	hero:draw("fill")
 	local x, y = hero:center()
-	love.graphics.draw(heroimage, x, y-heroimage:getWidth(), 
-		0, 1, 1, heroimage:getWidth()/2, heroimage:getWidth()/2) --replace soon
+	--[[love.graphics.draw(heroimage, x, y-heroimage:getWidth(), 
+		0, 1, 1, heroimage:getWidth()/2, heroimage:getWidth()/2) ]]
 	love.graphics.reset()
 end
 
@@ -62,9 +63,16 @@ function on_collide(dt, shape_a, shape_b, mtv_x, mtv_y)
 end
 
 function collideHeroWithTile(dt, shape_a, shape_b, mtv_x, mtv_y)
-
     -- sort out which one our hero shape is
     local hero_shape, tileshape
+    if shape_a == hero and shape_b.type == "coin" then
+        player.coins = player.coins + 1
+        collider:remove(shape_b)
+        --need to delete coin graphic
+    elseif shape_b == hero and shape_a.type == "coin" then
+        player.coins = player.coins + 1
+        --need to delete coin graphic
+    end
     if shape_a == hero and shape_b.type == "tile" then
         hero_shape = shape_a
     elseif shape_b == hero and shape_a.type == "tile" then

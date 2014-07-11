@@ -6,13 +6,10 @@ loader.path = "maps/"
 function tiles.load()
 	map = loader.load("testlevel.tmx")
 	allSolidTiles = findSolidTiles(map)
-
-  --return allSolidTiles
 end
 function tiles.draw()
 	map:draw()
 end
-
 function findSolidTiles(map)
 
   local collidable_tiles = {}
@@ -20,10 +17,15 @@ function findSolidTiles(map)
   local layer = map.layers["ground"]
 
   for tileX, tileY, tile in layer:iterate() do
-
       if tile and tile.properties.solid then
         local ctile = collider:addRectangle((tileX) * 32, (tileY) * 32, 32, 32)
         ctile.type = "tile"
+        collider:addToGroup("tiles", ctile)
+        collider:setPassive(ctile)
+        table.insert(collidable_tiles, ctile)
+      elseif tile and tile.properties.coin then
+        local ctile = collider:addRectangle((tileX) * 32, (tileY) * 32, 32, 32)
+        ctile.type = "coin"
         collider:addToGroup("tiles", ctile)
         collider:setPassive(ctile)
         table.insert(collidable_tiles, ctile)
