@@ -1,0 +1,9 @@
+[submodule "libs/HardonCollider"]
+	path = libs/HardonCollider
+	url = https://github.com/vrld/HardonCollider
+[submodule "libs/hump"]
+	path = libs/hump
+	url = https://github.com/vrld/hump
+[submodule "libs/Advanced-Tiled-Loader"]
+	path = libs/Advanced-Tiled-Loader
+	url = https://github.com/Kadoba/Advanced-Tiled-Loader
