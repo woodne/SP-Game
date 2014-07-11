@@ -1,39 +1,16 @@
-require "src.player"
-require "src.tiles"
-Camera = require "libs.hump.camera"
+Gamestate = require ("libs.hump.gamestate")
+require ("src.splash")
+require ("src.menu")
+require ("src.world")
 
-local HC = require "libs/HardonCollider"
+Timer = require ("libs.hump.timer")
 
 function love.load()
-  gravity = 300
-  --collisions
-  collider = HC(100, on_collide)
-  --loading classes
-  player.load()
-  tiles.load()
-  --camera
-  cam = Camera(hero:center())
-
-  local w,h = map.width*64, map.height*32
-  local x,y = hero:center() 
-  map:setDrawRange(x,y,w,h)
-  print (map:getDrawRange ())
+    Gamestate.registerEvents()
+    Gamestate.switch(splash)
+    Timer.add(3, function() Gamestate.switch(menu) end)
 end
+
 function love.update(dt)
-  player.move(dt)
-  player.update(dt)
-
-  collider:update(dt)
-  updateCamera(dt)
-end
-function love.draw()
-  cam:attach()
-  tiles.draw()
-  player.draw()
-  cam:detach()
-  love.graphics.print("FPS: "..love.timer.getFPS(), 300, 5)
-  love.graphics.print("COINS: "..player.coins,0,5)
-end
-function updateCamera(dt)
-  cam:lookAt(hero:center())
+    Timer.update(dt)
 end
