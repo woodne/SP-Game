@@ -1,10 +1,14 @@
+--require "maps/test"
+
+--tileMap = love.filesystem.load("maps/isolevel.lua") --swap to something not dependant on lua
+
 tiles = {}
 
 local loader = require "libs/Advanced-Tiled-Loader/Loader"
 loader.path = "maps/"
 
 function tiles.load()
-	map = loader.load("testlevel.tmx")
+	map = loader.load("isolevel.tmx")
 	allSolidTiles = findSolidTiles(map)
 end
 function tiles.draw()
@@ -18,21 +22,13 @@ function findSolidTiles(map)
 
   for tileX, tileY, tile in layer:iterate() do
       if tile and tile.properties.solid then
-        local ctile = collider:addRectangle((tileX) * 32, (tileY) * 32, 32, 32)
+        local ctile = collider:addRectangle((tileX) * 64, (tileY) * 32, 32, 32)
         ctile.type = "tile"
         collider:addToGroup("tiles", ctile)
         collider:setPassive(ctile)
         table.insert(collidable_tiles, ctile)
-      elseif tile and tile.properties.coin then
-        local ctile = collider:addRectangle((tileX) * 32, (tileY) * 32, 32, 32)
-        ctile.type = "coin"
-        collider:addToGroup("tiles", ctile)
-        collider:setPassive(ctile)
-        table.insert(collidable_tiles, ctile)
       end
-
   end
-
   return collidable_tiles
 end
 

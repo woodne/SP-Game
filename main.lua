@@ -5,7 +5,6 @@ Camera = require "libs.hump.camera"
 local HC = require "libs/HardonCollider"
 
 function love.load()
-  groundlevel = 480
   gravity = 300
   --collisions
   collider = HC(100, on_collide)
@@ -15,9 +14,9 @@ function love.load()
   --camera
   cam = Camera(hero:center())
 
-  local w,h = love.graphics.getWidth(), love.graphics.getHeight()
-  local x,y = hero:center() -- this is used again in update. really need to figure out lua scope...
-  map:setDrawRange(x,y,w,h) -- w and h are important. Tiles will render black if incorrect
+  local w,h = map.width*64, map.height*32
+  local x,y = hero:center() 
+  map:setDrawRange(x,y,w,h)
   print (map:getDrawRange ())
 end
 function love.update(dt)
@@ -33,6 +32,7 @@ function love.draw()
   player.draw()
   cam:detach()
   love.graphics.print("FPS: "..love.timer.getFPS(), 300, 5)
+  love.graphics.print("COINS: "..player.coins,0,5)
 end
 function updateCamera(dt)
   cam:lookAt(hero:center())

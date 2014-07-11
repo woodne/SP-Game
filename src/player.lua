@@ -1,8 +1,8 @@
  player = {}
 
 function player.load(dt)
-	player.x = 50
-	player.y = 250
+	player.x = 0
+	player.y = 0
 	player.friction = 7
 	player.width = 32
 	player.height = 32
@@ -14,7 +14,7 @@ function player.load(dt)
 	local jumped
 end
 function player.update(dt)
-	hero:move(0,dt*gravity)
+	--hero:move(0,dt*gravity)
 	if hero.velocity.y > 0 then
 		hero.velocity.y = hero.velocity.y -5
 	elseif hero.velocity.y < 0 then
@@ -38,6 +38,9 @@ function player.move(dt)
 	if love.keyboard.isDown('down') then 
 			hero:move(0, hero.speed*dt)
 	end
+    if love.keyboard.isDown('up') then 
+            hero:move(0, -hero.speed*dt)
+    end
 	if love.keyboard.isDown(' ') and
 		jumped == false then
 			hero.velocity.y = hero.velocity.y -500
@@ -52,7 +55,7 @@ end
 function player.draw()
 	love.graphics.setColor(255,0,0)
 	hero:draw("fill")
-	local x, y = hero:center()
+	--local x, y = hero:center()
 	--[[love.graphics.draw(heroimage, x, y-heroimage:getWidth(), 
 		0, 1, 1, heroimage:getWidth()/2, heroimage:getWidth()/2) ]]
 	love.graphics.reset()
@@ -65,14 +68,6 @@ end
 function collideHeroWithTile(dt, shape_a, shape_b, mtv_x, mtv_y)
     -- sort out which one our hero shape is
     local hero_shape, tileshape
-    if shape_a == hero and shape_b.type == "coin" then
-        player.coins = player.coins + 1
-        collider:remove(shape_b)
-        --need to delete coin graphic
-    elseif shape_b == hero and shape_a.type == "coin" then
-        player.coins = player.coins + 1
-        --need to delete coin graphic
-    end
     if shape_a == hero and shape_b.type == "tile" then
         hero_shape = shape_a
     elseif shape_b == hero and shape_a.type == "tile" then
